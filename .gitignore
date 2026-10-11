@@ -1,0 +1,25 @@
+# Track only source code and project documentation at the root.
+/*
+!/.gitignore
+!/.gitattributes
+!/README.md
+!/解析工具/
+
+# Explicit source/configuration allowlist; generated reports stay local.
+/解析工具/*
+!/解析工具/*.py
+!/解析工具/*.bat
+!/解析工具/*.md
+!/解析工具/requirements.txt
+!/解析工具/config.json
+!/解析工具/corpus.schema.json
+!/解析工具/laobu/
+!/解析工具/tests/
+
+__pycache__/
+*.py[cod]
+*.log
+.tmp/
+.env
+.env.*
+python_path.txt

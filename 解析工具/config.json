@@ -1,0 +1,29 @@
+{
+  "input_dir": "..",
+  "output_dir": "..",
+  "model": "large-v3-turbo",
+  "model_dir": "../.tools/models",
+  "device": "auto",
+  "cpu_threads": 6,
+  "beam_size": 5,
+  "language": "zh",
+  "vad_filter": true,
+  "sample_interval": 0.4,
+  "adaptive_sampling": true,
+  "roi": null,
+  "retry_low_confidence": true,
+  "retry_limit": 30,
+  "max_gap_retry_seconds": 30,
+  "ocr_threads": 2,
+  "abbreviations": {
+    "WD": ["网贷"],
+    "JC": ["警察"],
+    "DB": ["赌博"],
+    "GL": [],
+    "ZW": [],
+    "YS": [],
+    "Z地": [],
+    "走D": []
+  },
+  "evidence_terms": ["皇马", "C罗", "鹿岛鹿角", "世俱杯", "米兰", "太阳队", "NBA", "世界杯", "欧冠", "王二", "李多多", "任成利", "朱小江"]
+}

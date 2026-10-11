@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:laobu:corpus:1",
+  "title": "老布单视频研究包 V1",
+  "type": "object",
+  "required": ["schema_version", "metadata", "asr", "ocr", "alignments", "reviews", "research"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "metadata": {
+      "type": "object",
+      "required": ["schema_version", "tool_version", "video_id", "run_id", "title", "sha256", "parameters", "runtime", "human_review_status", "fact_verified"],
+      "properties": {
+        "video_id": {"type": "string", "pattern": "^LB-[0-9]{4,}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "episode": {"type": ["integer", "null"], "minimum": 1},
+        "series_id": {"type": ["string", "null"]},
+        "fact_verified": {"const": false},
+        "human_review_status": {"const": "unreviewed"}
+      }
+    },
+    "asr": {
+      "type": "object",
+      "required": ["segments", "duration", "model", "language", "gaps", "retries"],
+      "properties": {"segments": {"type": "array", "items": {"$ref": "#/$defs/asrSegment"}}, "duration": {"type": "number", "exclusiveMinimum": 0}, "gaps": {"type": "array"}, "retries": {"type": "array"}}
+    },
+    "ocr": {
+      "type": "object",
+      "required": ["roi", "roi_detection", "frames", "segments", "sampling_interval"],
+      "properties": {
+        "roi": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number", "minimum": 0, "maximum": 1}},
+        "frames": {"type": "array"},
+        "segments": {"type": "array", "items": {"$ref": "#/$defs/ocrSegment"}}
+      }
+    },
+    "alignments": {"type": "array", "items": {"$ref": "#/$defs/alignment"}},
+    "reviews": {"type": "array"},
+    "research": {"type": "object", "required": ["fields", "literal_candidates", "semantic_analysis"]},
+    "candidate_segments": {"type": "array", "items": {"$ref": "#/$defs/timedText"}},
+    "legacy_review_records": {"type": "array"}
+  },
+  "$defs": {
+    "timedText": {"type": "object", "required": ["id", "start", "end", "text"], "properties": {"id": {"type": "string"}, "start": {"type": "number", "minimum": 0}, "end": {"type": "number", "exclusiveMinimum": 0}, "text": {"type": "string"}}},
+    "asrSegment": {"allOf": [{"$ref": "#/$defs/timedText"}, {"required": ["avg_logprob", "no_speech_prob", "words", "speaker_type", "human_review_status"]}]},
+    "ocrSegment": {"allOf": [{"$ref": "#/$defs/timedText"}, {"required": ["confidence", "sample_indices", "content_type", "timing_uncertainty_seconds"]}]},
+    "alignment": {
+      "type": "object",
+      "required": ["id", "video_id", "start", "end", "asr_raw", "ocr_raw", "candidate_transcript", "revision_basis", "revision_history", "category", "difference_types", "confidence", "human_review_status"],
+      "properties": {"category": {"enum": ["A", "B", "C", "D"]}, "human_review_status": {"enum": ["unreviewed", "human_confirmed"]}}
+    }
+  }
+}
